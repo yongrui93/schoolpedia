@@ -1,1 +1,1 @@
-web: gunicorn src/schoolpedia.wsgi --log-file -
+web: gunicorn --pythonpath src schoolpedia.wsgi --log-file -
