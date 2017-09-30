@@ -74,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'schoolpedia.wsgi.application'
 AUTH_USER_MODEL = 'sso.User'
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
