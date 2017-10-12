@@ -1,3 +1,14 @@
-from django.shortcuts import render
+def register(request):
+    pass
 
-# Create your views here.
+def login(request):
+    pass
+
+def verify(request):
+    pass
+
+def forgot_password(request):
+    pass
+
+def reset_password(request):
+    pass
