@@ -1,0 +1,196 @@
+{% extends 'app/school_base.html' %}
+{% load static %}
+{% load app_extras %}
+
+{% block script %}
+    {% if has_coordinate == False %}
+        <script>
+            function run() {
+                if (navigator.geolocation) {
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    };
+                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                var latitude = position.coords.latitude.toString()
+                var longitude = position.coords.longitude.toString()
+                window.location.replace("?latitude=" + latitude.toString() + "&longitude=" + longitude);
+            }
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+                run()
+            }
+            run()
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div style="flex: 1; flex-direction: column">
+        <div>
+            <div class="ui grid">
+                {% if has_coordinate == False %}
+                    <div class="two wide column"></div>
+                    <div class="twelve wide column">
+                        <div class="ui visible info message">
+                            Please wait.. We are fetching your location..
+                        </div>
+                    </div>
+                    <div class="two wide column"></div>
+                {% endif %}
+                <div class="two wide column"></div>
+                <div class="twelve wide column">
+                    <div class="ui action input">
+                        <input type="text" placeholder="Enter PSLE score">
+                        <button class="ui button">Go</button>
+                    </div>
+                    {% if has_coordinate == True %}
+                        location: {{ latitude }}, {{ longitude}}
+                    {% endif %}
+                </div>
+                <div class="two wide column"></div>
+            </div>
+        </div>
+        <div style="flex: 1">
+            <div class="ui grid">
+                <div class="two wide column"></div>
+                <div class="twelve wide column">
+                    <div class="ui segments">
+                        {% for school in school_list %}
+                            <div class="ui segment">
+                                <div class="ui grid">
+                                    <div class="three wide column">
+                                        <div class="ui image">
+                                            <a href="{% url 'app:school_detail' school.id %}">
+                                                <img src="{% static '/catholicHigh.jpg' %}" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="thirteen wide column">
+                                        <a class="ui header" href="{% url 'app:school_detail' school.id %}">
+                                            {{ school.school_name }}
+                                        </a>
+                                        {% if user.is_authenticated %}
+                                            {% if school|is_bookmarked:request.user == True %}
+                                                <div class="ui green basic label">
+                                                    <i class="bookmark icon"></i>
+                                                    Bookmarked
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if school|is_compared:request == True %}
+                                            <div class="ui green basic label">
+                                                <i class="plus icon"></i>
+                                                Compared
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <p>{{ school.address }}</p>
+                                            <p>{{ school.postal_code }}</p>
+                                        </div>
+                                        <div>
+                                            {% if school|is_compared:request == True %}
+                                                <a class="ui red label" href="{% url 'app:remove_from_comparison' school.id %}">
+                                                    <i class="remove icon"></i>
+                                                    Remove from comparison
+                                                </a>
+                                            {% else %}
+                                                {% if allow_compare %}
+                                                    <a class="ui label" href="{% url 'app:add_to_comparison' school.id %}">
+                                                        <i class="plus icon"></i>
+                                                        Add to comparison
+                                                    </a>
+                                                {% else %}
+                                                    <a class="ui yellow disabled label">
+                                                        Max 4 comparison
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if user.is_authenticated %}
+                                                {% if school|is_bookmarked:request.user == True %}
+                                                    {% if has_coordinate == True %}
+                                                        <a class="ui red label" href="{% url 'app:unbookmark' school.id %}?latitude={{ latitude }}&longitude={{ longitude }}">
+                                                    {% else %}
+                                                        <a class="ui red label" href="{% url 'app:unbookmark' school.id %}">
+                                                    {% endif %}
+                                                        <i class="remove icon"></i>
+                                                        Unbookmark
+                                                    </a>
+                                                {% else %}
+                                                    {% if has_coordinate == True %}
+                                                        <a class="ui label" href="{% url 'app:bookmark' school.id %}?latitude={{ latitude }}&longitude={{ longitude }}">
+                                                    {% else %}
+                                                        <a class="ui label" href="{% url 'app:bookmark' school.id %}">
+                                                    {% endif %}
+                                                        <i class="bookmark icon"></i>
+                                                        Bookmark
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="ui pagination menu">
+                        {% if school_list.number|add:"-1" > 1 %}
+                            {% if has_coordinate == True %}
+                                <a class="item" href="?page=1&latitude={{ latitude }}&longitude={{ longitude }}">
+                            {% else %}
+                                <a class="item" href="?page=1">
+                            {% endif %}
+                                1
+                            </a>
+                            {% if school_list.number|add:"-2" > 1 %}
+                                <div class="disabled item">
+                                    ...
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if school_list.has_previous %}
+                            {% if has_coordinate == True %}
+                                <a class="item" href="?page={{ school_list.previous_page_number }}&latitude={{ latitude }}&longitude={{ longitude }}">
+                            {% else %}
+                                <a class="item" href="?page={{ school_list.previous_page_number }}">
+                            {% endif %}
+                                {{ school_list.previous_page_number }}
+                            </a>
+                        {% endif %}
+                        <a class="active item">{{ school_list.number }}</a>
+                        {% if school_list.has_next %}
+                            {% if has_coordinate == True %}
+                                <a class="item" href="?page={{ school_list.next_page_number }}&latitude={{ latitude }}&longitude={{ longitude }}">
+                            {% else %}
+                                <a class="item" href="?page={{ school_list.next_page_number }}">
+                            {% endif %}
+                                {{ school_list.next_page_number }}
+                            </a>
+                        {% endif %}
+                        {% if school_list.number|add:"1" < school_list.paginator.num_pages %}
+                            {% if school_list.number|add:"2" < school_list.paginator.num_pages %}
+                                <div class="disabled item">
+                                    ...
+                                </div>
+                            {% endif %}
+                            {% if has_coordinate == True %}
+                                <a class="item" href="?page={{ school_list.paginator.num_pages }}&latitude={{ latitude }}&longitude={{ longitude }}">
+                            {% else %}
+                                <a class="item" href="?page={{ school_list.paginator.num_pages }}">
+                            {% endif %}
+                                {{ school_list.paginator.num_pages }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="two wide column"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

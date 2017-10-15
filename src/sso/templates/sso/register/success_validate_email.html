@@ -1,0 +1,20 @@
+{% extends 'app/header_base.html' %}
+
+{% block content %}
+    <div class="ui center aligned grid" style="margin-top: auto; margin-bottom: auto; width: 100%">
+        <div class="three wide column"></div>
+        <div class="ten wide column">
+            <div class="ui visible positive message">
+                <div class="header">
+                    Successfully validate email!
+                </div>
+                <p>Return to login to your account</p>
+                <br />
+                <div class="item">
+                    <a class="ui button" href="{% url 'sso:login' %}">Okay</a>
+                </div>
+            </div>
+        </div>
+        <div class="three wide column"></div>
+    </div>
+{% endblock %}

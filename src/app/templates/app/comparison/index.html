@@ -1,0 +1,104 @@
+{% extends 'app/school_base.html' %}
+{% load static %}
+{% load app_extras %}
+
+{% block script %}
+    {% if has_coordinate == False %}
+        <script>
+            function run() {
+                if (navigator.geolocation) {
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    };
+                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                var latitude = position.coords.latitude.toString()
+                var longitude = position.coords.longitude.toString()
+                window.location.replace("?latitude=" + latitude.toString() + "&longitude=" + longitude);
+            }
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+                run()
+            }
+            run()
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div style="flex: 1; flex-direction: column">
+        <div>
+            <div class="ui grid">
+                {% if has_coordinate == False %}
+                    <div class="two wide column"></div>
+                    <div class="twelve wide column">
+                        <div class="ui visible info message">
+                            Please wait.. We are fetching your location..
+                        </div>
+                    </div>
+                    <div class="two wide column"></div>
+                {% endif %}
+                <div class="two wide column"></div>
+                <div class="twelve wide column">
+                    {% if has_coordinate == True %}
+                        location: {{ latitude }}, {{ longitude}}
+                    {% endif %}
+                </div>
+                <div class="two wide column"></div>
+            </div>
+        </div>
+        <div style="flex: 1">
+            {% if compared_school_list|length == 0 %}
+                <div class="ui header">
+                    <center>
+                        You haven't added any school to compare list
+                    </center>
+                </div>
+            {% else %}
+                <table class="ui definition table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>School 1</th>
+                            {% if compared_school_list|length >= 2 %}
+                                <th>School 2</th>
+                            {% endif %}
+                            {% if compared_school_list|length >= 3 %}
+                                <th>School 3</th>
+                            {% endif %}
+                            {% if compared_school_list|length >= 4 %}
+                                <th>School 4</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>School Name</td>
+                            {% for school in compared_school_list %}
+                                <td><a href="{% url 'app:school_detail' school.id %}">{{ school.school_name }}</a></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Postal Code</td>
+                            {% for school in compared_school_list %}
+                                <td>{{ school.postal_code }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Zone Code</td>
+                            {% for school in compared_school_list %}
+                                <td>{{ school.zone_code }}</td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

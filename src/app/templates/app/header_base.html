@@ -1,0 +1,44 @@
+{% extends 'app/base.html' %}
+{% block body %}
+    <body style="display: flex; flex-direction: column;">
+        <div class="ui attached secondary menu" style="border: none;">
+        </div>
+        <div class="ui secondary menu">
+            <div class="item"></div>
+            <a href="{% url 'app:home' %}">
+                <img src="/static/logo.png" height="60" />
+            </a>
+            <a class="item" href="{% url 'app:school_list' %}">Schools</a>
+            <a class="item" href="{% url 'app:bookmark_list' %}">Bookmark</a>
+            <a class="item" href="{% url 'app:compare_schools' %}">Comparison</a>
+            <a class="item" href="#">FAQ</a>
+            <a class="item" href="#">Contact Us</a>
+            {% if user.is_authenticated %}
+                <div class="item">
+                    <div class="ui buttons">
+                        <div class="ui button">Hi, {{ user }}</div>
+                        <a class="ui primary button" href="{% url 'sso:logout' %}">Logout</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="item">
+                    <a class="ui primary button" href="{% url 'sso:login' %}">Login</a>
+                </div>
+            {% endif %}
+            <div class="right menu">
+                <div class="item">
+                    <div class="ui action left icon input">
+                        <i class="search icon"></i>
+                        <input type="text" placeholder="Enter school">
+                        <button class="ui button">Search</button>
+                    </div>
+                </div>
+                <div class="item"></div>
+            </div>
+        </div>
+        <div class="ui text container" style="display: flex; flex: 1; margin-bottom: 14rem;">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+{% endblock %}

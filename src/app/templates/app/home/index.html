@@ -1,39 +1,24 @@
-{% extends 'app/home/base.html' %}
+{% extends 'app/header_base.html' %}
 {% block content %}
-    <div class="ui one column center aligned grid" style="margin: auto;">
+    <div class="ui one column center aligned grid" style="margin-top: auto; margin-bottom: auto; width: 100%">
         <div class="column">
             <div class="ui image">
                 <img src="/static/logo.png">
             </div>
         </div>
         <div class="column">
-            <div class="ui huge header">
-                Enter PSLE score
-            </div>
             <form class="ui large form">
                 <div class="ui grid">
-                    <div class="five wide column"></div>
-                    <div class="six wide column">
-                        <div class="ui fluid input">
-                            <input name="score">
+                    <div class="two wide column"></div>
+                    <div class="twelve wide column">
+                        <div class="ui action huge fluid input">
+                            <input type="text" placeholder="Enter PSLE Score">
+                            <button class="ui teal button"><center>GO</center></button>
                         </div>
                     </div>
-                    <div class="five wide column"></div>
-                    <div class="five wide column"></div>
-                    <div class="six wide column">
-                        <button class="ui fluid button">Search</button>
-                    </div>
-                    <div class="five wide column"></div>
+                    <div class="two wide column"></div>
                 </div>
             </form>
-        </div>
-        <div class="column">
-            <div class="ui large header">
-                Announcement
-            </div>
-            <div class="ui segment">
-                    Soft launch on October 2017. --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                            
-            </div>
         </div>
     </div>
 {% endblock %}

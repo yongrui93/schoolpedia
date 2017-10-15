@@ -33,6 +33,8 @@ ALLOWED_HOSTS = [
 
 # Application definition
 
+LOGIN_URL = '/sso/login/'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'sso'
+    'sso',
+    'semanticui'
 ]
 
 MIDDLEWARE = [
@@ -137,3 +140,10 @@ STATICFILES_DIRS = (
 # https://warehouse.python.org/project/whitenoise/
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# Email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'schoolpediacz2006@gmail.com'
+EMAIL_HOST_PASSWORD = 'cz2006ntu'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True

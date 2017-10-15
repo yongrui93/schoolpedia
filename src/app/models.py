@@ -40,6 +40,9 @@ class School(models.Model):
     special_sdp_offered = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['school_name']
+
 
 class SchedulerLog(models.Model):
     type = models.CharField(

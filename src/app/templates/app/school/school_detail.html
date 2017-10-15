@@ -1,0 +1,105 @@
+{% extends 'app/school_base.html' %}
+{% load static %}
+{% load app_extras %}
+
+{% block script %}
+    {% if has_coordinate == False %}
+        <script>
+            function run() {
+                if (navigator.geolocation) {
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    };
+                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                var latitude = position.coords.latitude.toString()
+                var longitude = position.coords.longitude.toString()
+                window.location.replace("?latitude=" + latitude.toString() + "&longitude=" + longitude);
+            }
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+                run()
+            }
+            run()
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div style="flex: 1; flex-direction: column">
+        <div>
+            <div class="ui grid">
+                {% if has_coordinate == False %}
+                    <div class="two wide column"></div>
+                    <div class="twelve wide column">
+                        <div class="ui visible info message">
+                            Please wait.. We are fetching your location..
+                        </div>
+                    </div>
+                    <div class="two wide column"></div>
+                {% endif %}
+                <div class="two wide column"></div>
+                <div class="twelve wide column">
+                    {% if has_coordinate == True %}
+                        [DEBUG] location: {{ latitude }}, {{ longitude}}
+                    {% endif %}
+                </div>
+                <div class="two wide column"></div>
+            </div>
+        </div>
+        <div style="flex: 1">
+            <div class="ui grid">
+                <div class="two wide column"></div>
+                <div class="twelve wide column">
+                    <div class="ui segment">
+                        <h1 class="ui header"><center>{{ school.school_name }}</center></h1>
+                        <center><img src="{% static 'catholichigh.jpg' %}"></img></center>
+                        <h2>
+                            <center>Vision</center>
+                        </h2>
+                        <h4>
+                            <center>{{ school.visionstatement_desc }}</center>
+                        </h4>
+                        <h2><center>Mission</center></h2>
+                        <h4>
+                            <center>{{ school.missionstatement_desc }}</center>
+                        </h4>
+                        <div class="ui hidden divider"></div>
+                        <div class="ui center aligned grid">
+                            <div class="eight wide column">
+                                <h3 class="header">Location</h3>
+                                <p>{{ school.address }}</p>
+                                <p>{{ school.postal_code }}</p>
+                                <p>Nearest MRT: {{ school.mrt_desc }}</p>
+                                <p>Bus services: {{ school.bus_desc }}</p>
+                            </div>
+                            <div class="eight wide column">
+                                <h3 class="header">In Charge</h3>
+                                <p>Principal: {{ school.principal_name }}</p>
+                                <p>Vice Principal: {{ school.first_vp_name }}</p>
+                                <p>Vice Principal: {{ school.second_vp_name }}</p>
+                                <p>Vice Principal: {{ school.third_vp_name }}</p>
+                                <p>Vice Principal: {{ school.fourth_vp_name }}</p>
+                                <p>Vice Principal: {{ school.fifth_vp_name }}</p>
+                            </div>
+                            <div class="four wide column"></div>
+                            <div class="four wide column"></div>
+                            <div class="four wide column"></div>
+                            <div class="four wide column"></div>
+                            <div class="four wide column"></div>
+                            <div class="four wide column"></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="two wide column"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

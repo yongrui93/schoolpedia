@@ -1,0 +1,165 @@
+{% load semanticui %}
+
+{% if field|is_checkbox %}
+    <div class="{% if is_inline %}inline {% endif %}field">
+        <div class="ui checkbox {{ classes.single_value }}">
+            {% if field.auto_id %}
+                {{ field }}
+                <label>{{ field.label }}</label>
+            {% endif %}
+            {% for error in field.errors %}
+                <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+            {% endfor %}
+
+            {% if field.help_text %}
+                <div class="label">
+                    {{ field.help_text|safe }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% elif field|is_radio %}
+    <div class="{% if is_inline %}inline {% endif %}grouped fields {% if field.field.required %}required{% endif %} {% if field.errors %} error{% endif %}{% if field.error %} error{% endif %}">
+        {% if field.auto_id %}
+            <label>{{ field.label }}</label>
+        {% endif %}
+        {% for choice in field %}
+            <div class="field">
+                <div class="ui radio checkbox">
+                    {{ choice.tag }}
+                    <label>{{ choice.choice_label }}</label>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% for error in field.errors %}
+            <span class="ui pointing red basic label {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <div class="label">
+                {{ field.help_text|safe }}
+            </div>
+        {% endif %}
+    </div>
+{% elif field|is_date_range_start %}
+    <div class="{% if is_inline %}inline {% endif %}field {% if field.field.required %}required{% endif %} {% if field.errors %} error{% endif %}{% if field.error %} error{% endif %}">
+        {% if field.auto_id %}
+            <label class="{{ classes.label }}" for="{{ field.auto_id }}">{{ field.label }}</label>
+        {% endif %}
+
+        <div class="ui calendar" id="rangestart">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" name="{{ field.name }}" placeholder="Start Date" value="{{ field.value }}">
+          </div>
+        </div>
+
+        {% for error in field.errors %}
+            <span class="ui pointing red basic label {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <div class="label">
+                {{ field.help_text|safe }}
+            </div>
+        {% endif %}
+    </div>
+    <script> $(document).ready(function() { $('#rangestart').calendar({ type: 'date', endCalendar: $('#rangeend') }); }); </script>
+{% elif field|is_date_range_end %}
+    <div class="{% if is_inline %}inline {% endif %}field {% if field.field.required %}required{% endif %} {% if field.errors %} error{% endif %}{% if field.error %} error{% endif %}">
+        {% if field.auto_id %}
+            <label class="{{ classes.label }}" for="{{ field.auto_id }}">{{ field.label }}</label>
+        {% endif %}
+
+        <div class="ui calendar" id="rangeend">
+            <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" name="{{ field.name }}" placeholder="End Date" value="{{field.value}}">
+            </div>
+        </div>
+
+        {% for error in field.errors %}
+            <span class="ui pointing red basic label {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <div class="label">
+                {{ field.help_text|safe }}
+            </div>
+        {% endif %}
+    </div>
+    <script> $(document).ready(function() { $('#rangeend').calendar({ type: 'date', startCalendar: $('#rangestart') }); }); </script>
+{% elif field|is_date %}
+    <div class="{% if is_inline %}inline {% endif %}field {% if field.field.required %}required{% endif %} {% if field.errors %} error{% endif %}{% if field.error %} error{% endif %}">
+        {% if field.auto_id %}
+            <label class="{{ classes.label }}" for="{{ field.auto_id }}">{{ field.label }}</label>
+        {% endif %}
+
+        <div class="ui calendar" name="{{ field.name }}">
+            <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" name="{{ field.name }}" placeholder="Date/Time" value="{{field.value}}">
+            </div>
+        </div>
+
+        {% for error in field.errors %}
+            <span class="ui pointing red basic label {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <div class="label">
+                {{ field.help_text|safe }}
+            </div>
+        {% endif %}
+    </div>
+    <script> $(document).ready(function() { $('.ui.calendar[name="{{ field.name }}"]').calendar({ type: 'date' }); }); </script>
+{% elif field|is_datetime %}
+    <div class="{% if is_inline %}inline {% endif %}field {% if field.field.required %}required{% endif %} {% if field.errors %} error{% endif %}{% if field.error %} error{% endif %}">
+        {% if field.auto_id %}
+            <label class="{{ classes.label }}" for="{{ field.auto_id }}">{{ field.label }}</label>
+        {% endif %}
+
+        <div class="ui calendar" name="{{ field.name }}">
+            <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" name="{{ field.name }}" placeholder="Date/Time" value="{{field.value}}">
+            </div>
+        </div>
+
+        {% for error in field.errors %}
+            <span class="ui pointing red basic label {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <div class="label">
+                {{ field.help_text|safe }}
+            </div>
+        {% endif %}
+    </div>
+    <script> $(document).ready(function() { $('.ui.calendar[name="{{ field.name }}"]').calendar(); }); </script>
+{% else %}
+    <div class="{% if is_inline %}inline {% endif %}field {% if field.field.required %}required{% endif %} {% if field.errors %} error{% endif %}{% if field.error %} error{% endif %}" {% if field.field.disabled %}style="display:none;"{% endif %}>
+        {% if field.auto_id %}
+            <label class="{{ classes.label }}" for="{{ field.auto_id }}">{{ field.label }}</label>
+        {% endif %}
+        {% if 'icon' in field.field.widget.attrs %}
+            <div class="ui icon input">
+                {{ field }}
+                <i class="ui icon {{ field.field.widget.attrs.icon }}"></i>
+            </div>
+        {% else %}
+            {{ field }}
+        {% endif %}
+
+        {% for error in field.errors %}
+            <span class="ui pointing red basic label {{ form.error_css_class }}">{{ error }}</span>
+        {% endfor %}
+
+        {% if field.help_text %}
+            <div class="label">
+                {{ field.help_text|safe }}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
