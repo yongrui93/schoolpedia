@@ -71,7 +71,7 @@ def faq(request):
 
 def contact_us(request):
     if request.method == "POST":
-        return HttpResponseRedirect("http://www.google.com")
+        return HttpResponseRedirect("/")
     else:
         return render(request, 'app/contactus/index.html')
 
