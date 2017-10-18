@@ -66,14 +66,14 @@ def compare_schools(request):
         'compared_school_list': compared_school_list
     })
 
-
 def faq(request):
     pass
 
-
 def contact_us(request):
-    pass
-
+    if request.method == "POST":
+        return HttpResponseRedirect("http://www.google.com")
+    else:
+        return render(request, 'app/contactus/index.html')
 
 def send_enquiry(contact):
     pass

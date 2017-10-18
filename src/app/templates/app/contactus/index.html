@@ -1,0 +1,72 @@
+{% extends 'app/school_base.html' %}
+{% load static %}
+
+
+  {% block content %}
+  <div class="ui container">
+        <!--CONTENT STARTS HERE-->
+         <div class="ui grid" style="margin-top:5%">
+                    <div class="eleven wide column">
+
+                        <form class="ui large form" method="POST"> {% csrf_token %}
+                            <div class="ui stacked segment">
+                                <h2>Contact Us</h2>
+                                <!--<h4>We are here to answer any questions you might have about our services.<br /> Reach out to us and we'll response as soon as we can.</h4>-->
+                                <div class="ui required field">
+                                    <label style="text-align:left">Name</label>
+                                    <div class="two fields">
+                                        <div class="ui field">
+                                            <input name="name" type="text" required="" placeholder="First Name" required />
+                                        </div>
+                                        <div class="ui field">
+                                            <input name="name" type="text" placeholder="Last Name" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="field required">
+                                    <label style="text-align:left">Email</label>
+                                    <div class="ui left icon input">
+                                        <i class="user icon"></i>
+                                        <input type="email" name="email" placeholder="E-mail address" required>
+                                    </div>
+                                </div>
+                                <div class="ui required field">
+                                    <label style="text-align:left">Message</label>
+                                    <textarea name="message" placeholder="Message" required></textarea>
+                                </div>
+
+                                <div class="field">
+                                    <button class="ui primary submit button">Submit</button>
+                                </div>
+
+                                <div class="ui error message"></div>
+                            </div>
+                            {% if form.errors %}
+                                <div class="ui error message">
+                                    <ul class="list">
+                                        {% for error in form.non_field_errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </form>
+
+                    </div>
+                    <div class="five wide icon column">
+                        <!--<h3 class="header">Telephone</h3>-->
+                        <h4><i class="phone icon"></i><b>Telephone</b>: +65 6293 9128</h4>
+                        <h4><i class="mail icon"></i><b>Email</b>: enquiry@schoolpedia.sg</h4>
+                        <button class="ui facebook button">
+                            <i class="facebook icon"></i>
+                            Facebook
+                        </button>
+                        <button class="ui twitter button">
+                            <i class="twitter icon"></i>
+                            Twitter
+                        </button>
+                    </div>
+
+                </div>
+              </div>
+{% endblock %}

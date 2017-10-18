@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^schools/(?P<school_id>\d+)/remove_from_comparison/$', public_view.remove_from_comparison, name='remove_from_comparison'),
 
     url(r'^compare_schools/$', public_view.compare_schools, name='compare_schools'),
-
+    url(r'^contact_us/$', public_view.contact_us, name='contact_us'),
     # user views
     url(r'^bookmarks/$', user_view.bookmark_list, name='bookmark_list'),
     url(r'^bookmarks/(?P<school_id>\d+)/bookmark/$', user_view.bookmark, name='bookmark'),
