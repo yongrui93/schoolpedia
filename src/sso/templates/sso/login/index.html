@@ -1,5 +1,44 @@
 {% extends 'app/header_base.html' %}
 {% block content %}
+<script>
+$(document)
+.ready(function() {
+  $('.ui.form')
+    .form({
+      fields: {
+        email: {
+          identifier  : 'email',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'Please enter your e-mail'
+            },
+            {
+              type   : 'email',
+              prompt : 'Please enter a valid e-mail'
+            }
+          ]
+        },
+        password: {
+          identifier  : 'password',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'Please enter your password'
+            },
+            {
+              type   : 'length[6]',
+              prompt : 'Your password must be at least 6 characters'
+            }
+          ]
+        }
+      }
+    })
+  ;
+})
+;
+</script>
+
     <div class="ui center aligned grid" style="margin-top: auto; margin-bottom: auto; width: 100%">
         <div class="three wide column"></div>
         <div class="ten wide column">
